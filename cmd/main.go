@@ -6,6 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/bohoslavskyi/ip-info/configs"
 	"github.com/bohoslavskyi/ip-info/internal/server"
 	"github.com/sirupsen/logrus"
 )
@@ -13,9 +14,14 @@ import (
 func main() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
+	cfg, err := configs.NewConfig()
+	if err != nil {
+		logrus.Fatalf("error initializing configs: %s", err.Error())
+	}
+
 	httpServer := new(server.Server)
 	go func() {
-		if err := httpServer.Run(8000); err != nil {
+		if err := httpServer.Run(cfg.ServerPort); err != nil {
 			logrus.Fatalf("error occured while running HTTP server: %s.", err.Error())
 		}
 	}()
