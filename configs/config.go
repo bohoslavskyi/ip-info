@@ -8,7 +8,9 @@ import (
 const envFilePath = ".env"
 
 type Config struct {
-	ServerPort int `envconfig:"SERVER_PORT" default:"80"`
+	ServerPort      int    `envconfig:"SERVER_PORT" default:"80"`
+	CurrenciesAPI   string `envconfig:"CURRENCIES_API"`
+	ExchangeRateAPI string `envconfig:"EXCHANGE_RATES_API"`
 }
 
 func NewConfig() (*Config, error) {

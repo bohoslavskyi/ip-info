@@ -20,7 +20,7 @@ func main() {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
 
-	handlers := handler.NewHandler()
+	handlers := handler.NewHandler(cfg)
 	httpServer := new(server.Server)
 	go func() {
 		if err := httpServer.Run(cfg.ServerPort, handlers.InitRoutes()); err != nil {
