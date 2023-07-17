@@ -7,6 +7,7 @@ import (
 	"syscall"
 
 	"github.com/bohoslavskyi/ip-info/configs"
+	"github.com/bohoslavskyi/ip-info/internal/handler"
 	"github.com/bohoslavskyi/ip-info/internal/server"
 	"github.com/sirupsen/logrus"
 )
@@ -19,9 +20,10 @@ func main() {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
 
+	handlers := handler.NewHandler()
 	httpServer := new(server.Server)
 	go func() {
-		if err := httpServer.Run(cfg.ServerPort); err != nil {
+		if err := httpServer.Run(cfg.ServerPort, handlers.InitRoutes()); err != nil {
 			logrus.Fatalf("error occured while running HTTP server: %s.", err.Error())
 		}
 	}()
