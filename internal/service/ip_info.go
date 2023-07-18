@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-)
 
-const externalServiceEndpoint = "http://ip-api.com/json/%s?fields=status,message,country,countryCode,city,lat,lon,timezone"
+	"github.com/bohoslavskyi/ip-info/configs"
+)
 
 type IPInfo struct {
 	Status      string  `json:"status"`
@@ -21,14 +21,19 @@ type IPInfo struct {
 }
 
 type IPInfoService struct {
+	cfg *configs.Config
 }
 
-func NewIPInfoService() IPInfoService {
-	return IPInfoService{}
+func NewIPInfoService(cfg *configs.Config) *IPInfoService {
+	return &IPInfoService{cfg: cfg}
 }
 
 func (s *IPInfoService) GetIPInfo(ip string) (*IPInfo, error) {
-	url := fmt.Sprintf(externalServiceEndpoint, ip)
+	url := fmt.Sprintf(
+		"%s/%s?fields=status,message,country,countryCode,city,lat,lon,timezone",
+		s.cfg.IPInfoAPI,
+		ip,
+	)
 	response, err := http.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get IP info: %s", err.Error())

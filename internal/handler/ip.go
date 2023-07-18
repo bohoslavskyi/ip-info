@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/bohoslavskyi/ip-info/internal/model"
+	"github.com/bohoslavskyi/ip-info/internal/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +15,24 @@ func (h *Handler) GetIPInfo(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusInternalServerError, map[string]string{
-		"message": "Unimplemented error",
-	})
+	ipProcessor := service.NewIPProcessor(h.cfg)
+	processedIPs := make(chan service.IPDetails)
+
+	for _, ip := range request.IPs {
+		currentIP := ip
+		go ipProcessor.Process(currentIP, processedIPs)
+	}
+
+	var ipsDetails []service.IPDetails
+	for range request.IPs {
+		processedIP := <-processedIPs
+		if processedIP.Err != nil {
+			newErrorResponse(ctx, http.StatusInternalServerError, processedIP.Err.Error())
+			return
+		}
+
+		ipsDetails = append(ipsDetails, processedIP)
+	}
+
+	ctx.JSON(http.StatusOK, ipsDetails)
 }

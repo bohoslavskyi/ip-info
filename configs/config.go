@@ -9,6 +9,7 @@ const envFilePath = ".env"
 
 type Config struct {
 	ServerPort      int    `envconfig:"SERVER_PORT" default:"80"`
+	IPInfoAPI       string `envconfig:"IPINFO_API"`
 	CurrenciesAPI   string `envconfig:"CURRENCIES_API"`
 	ExchangeRateAPI string `envconfig:"EXCHANGE_RATES_API"`
 }
