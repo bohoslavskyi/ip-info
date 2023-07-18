@@ -49,19 +49,19 @@ curl --location 'localhost:8000/ip-info' \
         "city": "Sumy",
         "latitude": 50.9207,
         "longitude": 34.7959,
-        "currentTime": "07.718.18000 11:00",
+        "currentTime": "18.07.2023 14:54",
         "currencies": [
             {
-                "currency": "GIP",
+                "currency": "AFN",
+                "rateToUAH": 2.341429
+            },
+            {
+                "currency": "FKP",
                 "rateToUAH": 0.020729
             },
             {
-                "currency": "SGD",
-                "rateToUAH": 0.035799
-            },
-            {
-                "currency": "UGX",
-                "rateToUAH": 100.361446
+                "currency": "LSL",
+                "rateToUAH": 0.488623
             }
             ...
         ]
@@ -72,19 +72,19 @@ curl --location 'localhost:8000/ip-info' \
         "city": "Sumy",
         "latitude": 50.9207,
         "longitude": 34.7959,
-        "currentTime": "07.718.18000 11:00",
+        "currentTime": "18.07.2023 14:54",
         "currencies": [
             {
-                "currency": "IRR",
-                "rateToUAH": 1151.707146
+                "currency": "DZD",
+                "rateToUAH": 3.657598
             },
             {
-                "currency": "LAK",
-                "rateToUAH": 519.668212
+                "currency": "GHS",
+                "rateToUAH": 0.307516
             },
             {
-                "currency": "TJS",
-                "rateToUAH": 0.295177
+                "currency": "SEK",
+                "rateToUAH": 0.277022
             }
             ...
         ]
@@ -95,19 +95,19 @@ curl --location 'localhost:8000/ip-info' \
         "city": "Montreal",
         "latitude": 45.504,
         "longitude": -73.552,
-        "currentTime": "07.718.18000 11:00",
+        "currentTime": "18.07.2023 07:54",
         "currencies": [
             {
-                "currency": "MVR",
-                "rateToCAD": 11.672773
+                "currency": "BBD",
+                "rateToCAD": 1.51553
             },
             {
-                "currency": "SGD",
-                "rateToCAD": 1.001431
+                "currency": "DKK",
+                "rateToCAD": 5.033273
             },
             {
-                "currency": "ILS",
-                "rateToCAD": 2.752658
+                "currency": "KES",
+                "rateToCAD": 107.509479
             }
             ...
         ]

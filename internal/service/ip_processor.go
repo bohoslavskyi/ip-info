@@ -1,8 +1,6 @@
 package service
 
 import (
-	"time"
-
 	"github.com/bohoslavskyi/ip-info/configs"
 )
 
@@ -54,13 +52,20 @@ func (p *IPProcessor) Process(ip string, processedIPs chan<- IPDetails) {
 		return
 	}
 
+	currentTime, err := getCurrentTimeAtLocation(ipInfo.Timezone)
+	if err != nil {
+		ipDetails.Err = err
+		processedIPs <- ipDetails
+		return
+	}
+
 	processedIPs <- IPDetails{
 		IP:          ip,
 		Country:     ipInfo.Country,
 		City:        ipInfo.City,
 		Latitude:    ipInfo.Lat,
 		Longitude:   ipInfo.Lon,
-		CurrentTime: time.Now().Format("01.12.2000 15:00"),
+		CurrentTime: currentTime,
 		Currencies:  ratesToCurrencyMap(rates, currency),
 	}
 }
