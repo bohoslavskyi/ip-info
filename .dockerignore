@@ -1,0 +1,5 @@
+# Exclude git history and configuration.
+.gitignore
+
+# Exclude example files
+.env.example
