@@ -1,6 +1,6 @@
 # IP Info App
 
-## Getting Sterted
+## Getting Started
 This app allows to get information about country and currency based on IP address.
 
 ### Prerequisites
