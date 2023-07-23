@@ -9,7 +9,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const ipAddressesLimit = 10
+const (
+	minIPAddressesLimit = 1
+	maxIPAddressesLimit = 10
+)
 
 type GetIPInfoRequest struct {
 	IPs []string `json:"ips"`
@@ -50,12 +53,16 @@ func (h *Handler) GetIPInfo(ctx *gin.Context) {
 }
 
 func isRequestValid(request GetIPInfoRequest) error {
-	if len(request.IPs) > ipAddressesLimit {
-		return fmt.Errorf("request should contain at most %d IP addresses", ipAddressesLimit)
+	if len(request.IPs) < minIPAddressesLimit {
+		return fmt.Errorf("the request should contain at least %d IP addresse(s)", minIPAddressesLimit)
+	}
+
+	if len(request.IPs) > maxIPAddressesLimit {
+		return fmt.Errorf("the request should contain at most %d IP addresse(s)", maxIPAddressesLimit)
 	}
 
 	for _, ip := range request.IPs {
-		if ipAddress := net.ParseIP(ip); ipAddress == nil {
+		if addr := net.ParseIP(ip); addr == nil {
 			return fmt.Errorf("invalid IP address: %s", ip)
 		}
 	}
