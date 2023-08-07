@@ -9,6 +9,7 @@ import (
 	"github.com/bohoslavskyi/ip-info/configs"
 	"github.com/bohoslavskyi/ip-info/internal/handler"
 	"github.com/bohoslavskyi/ip-info/internal/server"
+	"github.com/bohoslavskyi/ip-info/internal/service"
 	"github.com/sirupsen/logrus"
 )
 
@@ -20,7 +21,8 @@ func main() {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
 
-	handlers := handler.NewHandler(cfg)
+	services := service.NewService(cfg)
+	handlers := handler.NewHandler(services)
 	httpServer := new(server.Server)
 	go func() {
 		if err := httpServer.Run(cfg.ServerPort, handlers.InitRoutes()); err != nil {

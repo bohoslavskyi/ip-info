@@ -5,6 +5,7 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/bohoslavskyi/ip-info/internal/model"
 	"github.com/bohoslavskyi/ip-info/internal/service"
 	"github.com/gin-gonic/gin"
 )
@@ -30,15 +31,15 @@ func (h *Handler) GetIPInfo(ctx *gin.Context) {
 		return
 	}
 
-	ipProcessor := service.NewIPProcessor(h.cfg)
-	processedIPs := make(chan service.IPDetails)
+	ipProcessor := service.NewIPProcessor(h.services.IPInfo, h.services.CurrencyProvider, h.services.ExchangeRateProvider)
+	processedIPs := make(chan model.IPDetails)
 
 	for _, ip := range request.IPs {
 		currentIP := ip
 		go ipProcessor.Process(currentIP, processedIPs)
 	}
 
-	var ipsDetails []service.IPDetails
+	var ipsDetails []model.IPDetails
 	for range request.IPs {
 		processedIP := <-processedIPs
 		if processedIP.Err != nil {

@@ -1,18 +1,20 @@
 package handler
 
 import (
-	"github.com/bohoslavskyi/ip-info/configs"
 	"github.com/bohoslavskyi/ip-info/internal/model"
+	"github.com/bohoslavskyi/ip-info/internal/service"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
 
 type Handler struct {
-	cfg *configs.Config
+	services *service.Service
 }
 
-func NewHandler(cfg *configs.Config) *Handler {
-	return &Handler{cfg: cfg}
+func NewHandler(services *service.Service) *Handler {
+	return &Handler{
+		services: services,
+	}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {

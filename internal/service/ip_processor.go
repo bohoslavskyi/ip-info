@@ -1,36 +1,23 @@
 package service
 
-import (
-	"github.com/bohoslavskyi/ip-info/configs"
-)
-
-type IPDetails struct {
-	IP          string           `json:"ip"`
-	Country     string           `json:"country"`
-	City        string           `json:"city"`
-	Latitude    float64          `json:"latitude"`
-	Longitude   float64          `json:"longitude"`
-	CurrentTime string           `json:"currentTime"`
-	Currencies  []map[string]any `json:"currencies"`
-	Err         error            `json:"-"`
-}
+import "github.com/bohoslavskyi/ip-info/internal/model"
 
 type IPProcessor struct {
-	ipInfoService       *IPInfoService
-	currencyService     *CurrencyService
-	exchangeRateService *ExchangeRateService
+	ipInfoService       IPInfo
+	currencyService     CurrencyProvider
+	exchangeRateService ExchangeRateProvider
 }
 
-func NewIPProcessor(cfg *configs.Config) *IPProcessor {
+func NewIPProcessor(ipInfoService IPInfo, currencyService CurrencyProvider, exchangeRateService ExchangeRateProvider) *IPProcessor {
 	return &IPProcessor{
-		ipInfoService:       NewIPInfoService(cfg),
-		currencyService:     NewCurrencyService(cfg),
-		exchangeRateService: NewExchangeRateService(cfg),
+		ipInfoService:       ipInfoService,
+		currencyService:     currencyService,
+		exchangeRateService: exchangeRateService,
 	}
 }
 
-func (p *IPProcessor) Process(ip string, processedIPs chan<- IPDetails) {
-	ipDetails := IPDetails{}
+func (p *IPProcessor) Process(ip string, processedIPs chan<- model.IPDetails) {
+	ipDetails := model.IPDetails{}
 	ipInfo, err := p.ipInfoService.GetIPInfo(ip)
 	if err != nil {
 		ipDetails.Err = err
@@ -59,7 +46,7 @@ func (p *IPProcessor) Process(ip string, processedIPs chan<- IPDetails) {
 		return
 	}
 
-	processedIPs <- IPDetails{
+	processedIPs <- model.IPDetails{
 		IP:          ip,
 		Country:     ipInfo.Country,
 		City:        ipInfo.City,
